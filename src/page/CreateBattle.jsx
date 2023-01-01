@@ -4,23 +4,29 @@ import { useNavigate } from "react-router-dom";
 import styles from "../styles";
 import { useGlobalContext } from "../Context";
 import { CustomButton, CustomInput, GameLoad } from "../components";
-import { goToNewRoute } from "../utils/interact";
 
 const CreateBattle = () => {
   const navigate = useNavigate();
-  const { contract, battleName, setBattleName } = useGlobalContext();
-  const [waitBattle, setWaitBattle] = useState(true);
-  const handleClick = async () => {};
+  const { contract, battleName, setBattleName, gameData } = useGlobalContext();
+  const [waitBattle, setWaitBattle] = useState(false);
 
   const createNewBattle = async () => {
-    if (!battleName || !battleName.trim) return;
+    if (!battleName || !battleName.trim) return null;
     try {
       await contract.createBattle(battleName);
-      // setWaitBattle(true);
+      setWaitBattle(true);
     } catch (e) {
       console.log("createNewBattle", e);
     }
   };
+
+  useEffect(() => {
+    // console.log("gameData", gameData);
+    if (gameData?.activeBattle?.battleStatus === 0) {
+      setWaitBattle(true);
+    }
+  }, [gameData]);
+
   return (
     <>
       {waitBattle ? <GameLoad /> : null}
@@ -33,7 +39,7 @@ const CreateBattle = () => {
         />
         <CustomButton
           title={"Create Battle!"}
-          handleClick={handleClick}
+          handleClick={createNewBattle}
           restType="mt-6"
         />
       </div>
