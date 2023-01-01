@@ -14,6 +14,7 @@ const Home = () => {
     if (contract == undefined) return;
     try {
       const playerExist = await contract.isPlayer(walletAddress);
+      console.log("playerExist", playerExist);
       if (!playerExist) {
         await contract.registerPlayer(playerName, playerName);
         setShowAlert({
@@ -21,8 +22,8 @@ const Home = () => {
           type: "info",
           message: `${playerName} is being summoned!`,
         });
-        navigate("/createbattle");
       }
+      navigate("/createbattle");
     } catch (e) {
       setShowAlert(errorAlert);
     }

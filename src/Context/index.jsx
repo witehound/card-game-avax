@@ -31,6 +31,7 @@ export const GlobalContextProvider = ({ children }) => {
     activeBattle: null,
   });
   const [updateGameData, setUpdateGameData] = useState(0);
+  const [balGround, setBalGround] = useState(`bg-astral`);
   const navigate = useNavigate();
 
   const updateWallet = async () => {
@@ -54,7 +55,7 @@ export const GlobalContextProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (contract) {
+    if (walletAddress) {
       createEventListeners({
         navigate,
         contract,
@@ -64,7 +65,7 @@ export const GlobalContextProvider = ({ children }) => {
         setUpdateGameData,
       });
     }
-  }, [contract]);
+  }, [walletAddress]);
 
   useEffect(() => {
     if (showAlert.status) {
@@ -117,6 +118,8 @@ export const GlobalContextProvider = ({ children }) => {
         battleName,
         setBattleName,
         gameData,
+        balGround,
+        setBalGround,
       }}
     >
       {children}

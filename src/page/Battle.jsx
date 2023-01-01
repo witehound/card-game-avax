@@ -10,17 +10,43 @@ import {
   player02 as playey02icon,
 } from "../assets";
 import { playAudio } from "../utils/animation.js";
-import { GlobalContextProvider } from "../Context";
+import { useGlobalContext } from "../Context";
 import { Alert } from "../components";
 
 const Battle = () => {
-  const { contract, gameData, walletAddress, showAlert, setShowAlert } =
-    GlobalContextProvider();
+  const {
+    contract,
+    gameData,
+    walletAddress,
+    showAlert,
+    setShowAlert,
+    balGround,
+    setBalGround,
+  } = useGlobalContext();
   const [player1, setPlayer1] = useState({});
   const [player2, setPlayer2] = useState({});
   const { battleName } = useParams();
   const navigate = useNavigate();
-  return <div>Battle</div>;
+
+  useEffect(() => {
+    first;
+
+    return () => {
+      const getPlayerInfo = async () => {
+        try {
+        } catch (error) {}
+      };
+      if (walletAddress && contract && gameData.activeBattle) getPlayerInfo();
+    };
+  }, [contract, gameData, battleName]);
+
+  return (
+    <div
+      className={`${styles.flexBetween} ${styles.gameContainer} ${balGround}`}
+    >
+      <h1 className="tx-xl">{battleName}</h1>
+    </div>
+  );
 };
 
 export default Battle;

@@ -12,7 +12,9 @@ const JoinBattle = () => {
 
   const handleJoinnBattle = async (name) => {
     if (contract) {
+      console.log("name", name);
       setBattleName(name);
+
       try {
         await contract.joinBattle(name);
         setShowAlert({
@@ -38,7 +40,7 @@ const JoinBattle = () => {
                 </p>
                 <CustomButton
                   title={"Join"}
-                  handleClick={handleJoinnBattle}
+                  handleClick={() => handleJoinnBattle(battle.name)}
                   restType="ml-"
                 />
               </div>
