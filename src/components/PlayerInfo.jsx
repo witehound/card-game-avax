@@ -12,7 +12,7 @@ const PlayerInfo = ({ player, playerIcon, mt }) => {
   return (
     <div className={`${styles.flexCenter} ${mt ? "mt-4" : "mb-4"}`}>
       <img
-        data-for={`Player-${mt ? "1 " : "2"}`}
+        data-for={`Player-${mt ? "1" : "2"}`}
         data-tip
         src={playerIcon}
         alt="player2"
@@ -39,6 +39,30 @@ const PlayerInfo = ({ player, playerIcon, mt }) => {
       >
         {player.mana || 0}
       </div>
+      <ReactToolTip
+        id={`Player-${mt ? "1" : "2"}`}
+        effect="solid"
+        backgroundColor="#7f46f0"
+      >
+        <p className={styles.playerInfo}>
+          <span className={styles.playerInfoSpan}>Name : </span>{" "}
+          {player?.playerName}
+        </p>
+        <p className={styles.playerInfo}>
+          <span className={styles.playerInfoSpan}>Name : </span>{" "}
+          {player?.playerAddress?.slice(0, 10)}
+        </p>
+      </ReactToolTip>
+      <ReactToolTip
+        id={`Health-${mt ? "1 " : "2"}`}
+        effect="solid"
+        backgroundColor="#7f46f0"
+      />
+      <ReactToolTip
+        id={`Mana-${mt ? "1" : "2"}`}
+        effect="solid"
+        backgroundColor="#7f46f0"
+      />
     </div>
   );
 };
