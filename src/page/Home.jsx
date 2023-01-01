@@ -1,7 +1,9 @@
 import { PageHOC } from "../components";
+import { useGlobalContext } from "../Context";
 
 const Home = () => {
-  return <div></div>;
+  const { contract, walletAddress } = useGlobalContext();
+  return <div className="flex flex-col"></div>;
 };
 
 export default PageHOC(
