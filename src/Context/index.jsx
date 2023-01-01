@@ -14,6 +14,7 @@ import {
   setSmartContractandProvider,
   updateCurrentWalletAddress,
 } from "../utils/context";
+import { initialAlert } from "../Constants";
 
 const GlobalContext = createContext();
 
@@ -22,10 +23,17 @@ export const GlobalContextProvider = ({ children }) => {
   const [provider, setProvider] = useState("");
   const [contract, setContract] = useState("");
   const [test, setTest] = useState(false);
+  const [showAlert, setShowAlert] = useState(initialAlert);
 
   const updateWallet = async () => {
     const account = await updateCurrentWalletAddress();
     setWalletAddress(account);
+  };
+
+  const getContract = async () => {
+    const { newProvier, newContract } = await setSmartContractandProvider();
+    setProvider(newProvier);
+    setContract(newContract);
   };
 
   useEffect(() => {
@@ -34,16 +42,24 @@ export const GlobalContextProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    const { newProvier, newContract } = setSmartContractandProvider();
-    setProvider(newProvier);
-    setContract(newContract);
+    getContract();
   }, []);
+
+  useEffect(() => {
+    if (showAlert.status) {
+      const timer = setTimeout(setShowAlert(initialAlert), 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showAlert]);
 
   return (
     <GlobalContext.Provider
       value={{
         walletAddress,
         contract,
+        showAlert,
+        setShowAlert,
       }}
     >
       {children}

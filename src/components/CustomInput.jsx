@@ -20,7 +20,7 @@ const CustomInput = ({
         type={type}
         placeholder={placeholder}
         value={value}
-        onChange={() => {
+        onChange={(e) => {
           if (e.target.value !== "" || regex.test(e.target.value))
             handleValueChange(e.target.value);
         }}
