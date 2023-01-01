@@ -3,14 +3,27 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles";
 import { useGlobalContext } from "../Context";
-import { CustomButton, CustomInput } from "../components";
+import { CustomButton, CustomInput, GameLoad } from "../components";
+import { goToNewRoute } from "../utils/interact";
 
 const CreateBattle = () => {
   const navigate = useNavigate();
   const { contract, battleName, setBattleName } = useGlobalContext;
+  const [waitBattle, setWaitBattle] = useState(true);
   const handleClick = async () => {};
+
+  const createNewBattle = async () => {
+    if (!battleName || !battleName.trim) return;
+    try {
+      await contract.createBattle(battleName);
+      setWaitBattle(true);
+    } catch (e) {
+      console.log("createNewBattle", e);
+    }
+  };
   return (
     <>
+      {waitBattle ? <GameLoad /> : null}
       <div className="flex flex-col mb-5s">
         <CustomInput
           label={"Battle"}
@@ -26,9 +39,7 @@ const CreateBattle = () => {
       </div>
       <p
         className={`${styles.infoText} mt-5`}
-        onClick={() => {
-          navigate("/joinbattle");
-        }}
+        onClick={goToNewRoute(navigate, "/joinbattle")}
       >
         Join Already Existing Battle
       </p>
