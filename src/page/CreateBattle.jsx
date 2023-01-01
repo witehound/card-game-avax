@@ -15,14 +15,12 @@ const CreateBattle = () => {
     try {
       await contract.createBattle(battleName);
       setWaitBattle(true);
-    } catch (e) {
-      console.log("createNewBattle", e);
-    }
+    } catch (e) {}
   };
 
   useEffect(() => {
-    // console.log("gameData", gameData);
     if (gameData?.activeBattle?.battleStatus === 0) {
+      console.log("gameData", gameData);
       setWaitBattle(true);
     }
   }, [gameData]);

@@ -15,10 +15,10 @@ export const createEventListeners = ({
   walletAddress,
   provider,
   setShowAlert,
+  setUpdateGameData,
 }) => {
   const newPlayerEventFilter = contract.filters.NewPlayer();
   addNewEvent(newPlayerEventFilter, provider, ({ args }) => {
-    console.log("args", args);
     if (walletAddress === args.owner) {
       setShowAlert({
         status: true,
@@ -26,5 +26,19 @@ export const createEventListeners = ({
         message: "Player has been succesfully registered!",
       });
     }
+  });
+
+  const newBattleEventFilter = contract.filters.NewBattle();
+
+  addNewEvent(newBattleEventFilter, provider, ({ args }) => {
+    console.log("New Battle Started", args, walletAddress);
+    if (
+      walletAddress.toLowerCase() === args.player1.toLowerCase() ||
+      walletAddress.toLowerCase() === args.player2.toLowerCase()
+    ) {
+      navigate(`/battle/${args.battleName}`);
+    }
+
+    setUpdateGameData((prevUpdateGameData) => prevUpdateGameData + 1);
   });
 };
