@@ -8,7 +8,7 @@ import { goToNewRoute } from "../utils/interact";
 
 const CreateBattle = () => {
   const navigate = useNavigate();
-  const { contract, battleName, setBattleName } = useGlobalContext;
+  const { contract, battleName, setBattleName } = useGlobalContext();
   const [waitBattle, setWaitBattle] = useState(true);
   const handleClick = async () => {};
 
@@ -16,7 +16,7 @@ const CreateBattle = () => {
     if (!battleName || !battleName.trim) return;
     try {
       await contract.createBattle(battleName);
-      setWaitBattle(true);
+      // setWaitBattle(true);
     } catch (e) {
       console.log("createNewBattle", e);
     }
@@ -39,7 +39,9 @@ const CreateBattle = () => {
       </div>
       <p
         className={`${styles.infoText} mt-5`}
-        onClick={goToNewRoute(navigate, "/joinbattle")}
+        onClick={() => {
+          navigate("/joinbattle");
+        }}
       >
         Join Already Existing Battle
       </p>

@@ -14,7 +14,6 @@ const Home = () => {
     if (contract == undefined) return;
     try {
       const playerExist = await contract.isPlayer(walletAddress);
-      console.log("playerExist", playerExist);
       if (!playerExist) {
         await contract.registerPlayer(playerName, playerName);
         setShowAlert({
@@ -31,7 +30,6 @@ const Home = () => {
   const checkForPlayerToken = async () => {
     const playerExist = await contract.isPlayer(walletAddress);
     const playerTokenExists = await contract.isPlayerToken(walletAddress);
-    console.log("playerExist", playerExist);
     if (playerExist && playerTokenExists) {
       navigate("/createbattle");
     }
