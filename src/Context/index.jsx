@@ -15,6 +15,7 @@ import {
   updateCurrentWalletAddress,
 } from "../utils/context";
 import { initialAlert } from "../Constants";
+import { createEventListeners } from "./createEventListeners";
 
 const GlobalContext = createContext();
 
@@ -24,6 +25,8 @@ export const GlobalContextProvider = ({ children }) => {
   const [contract, setContract] = useState("");
   const [test, setTest] = useState(false);
   const [showAlert, setShowAlert] = useState(initialAlert);
+  const [battleName, setBattleName] = useState("");
+  const navigate = useNavigate();
 
   const updateWallet = async () => {
     const account = await updateCurrentWalletAddress();
@@ -46,8 +49,22 @@ export const GlobalContextProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    if (contract) {
+      createEventListeners({
+        navigate,
+        contract,
+        walletAddress,
+        provider,
+        setShowAlert,
+      });
+    }
+  }, [contract]);
+
+  useEffect(() => {
     if (showAlert.status) {
-      const timer = setTimeout(setShowAlert(initialAlert), 5000);
+      const timer = setTimeout(() => {
+        setShowAlert(initialAlert);
+      }, [5000]);
 
       return () => clearTimeout(timer);
     }
@@ -60,6 +77,8 @@ export const GlobalContextProvider = ({ children }) => {
         contract,
         showAlert,
         setShowAlert,
+        battleName,
+        setBattleName,
       }}
     >
       {children}

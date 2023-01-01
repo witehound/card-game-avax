@@ -1,33 +1,47 @@
 import { PageHOC, CustomInput, CustomButton } from "../components";
 import { useGlobalContext } from "../Context";
-import { useState } from "react";
-import { Info } from "@material-ui/icons";
+import { useState, useEffect } from "react";
+import { errorAlert } from "../Constants";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const { contract, walletAddress, setShowAlert } = useGlobalContext();
   const [playerName, setPlayerName] = useState("");
 
+  const navigate = useNavigate();
+
   const handleRegisterUser = async () => {
     if (contract == undefined) return;
     try {
       const playerExist = await contract.isPlayer(walletAddress);
+      console.log("playerExist", playerExist);
       if (!playerExist) {
         await contract.registerPlayer(playerName, playerName);
         setShowAlert({
           status: true,
-          type: "Info",
+          type: "info",
           message: `${playerName} is being summoned!`,
         });
       }
-    } catch (error) {
-      setShowAlert({
-        status: true,
-        type: "error",
-        message: error.message,
-      });
-      alert(error.message);
+    } catch (e) {
+      setShowAlert(errorAlert);
     }
   };
+
+  const checkForPlayerToken = async () => {
+    const playerExist = await contract.isPlayer(walletAddress);
+    const playerTokenExists = await contract.isPlayerToken(walletAddress);
+    console.log("playerExist", playerExist);
+    if (playerExist && playerTokenExists) {
+      navigate("/createbattle");
+    }
+  };
+
+  useEffect(() => {
+    if (contract && walletAddress) {
+      checkForPlayerToken();
+    }
+  }, [walletAddress]);
 
   return (
     <div className="flex flex-col">
