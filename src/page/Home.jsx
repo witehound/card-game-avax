@@ -5,7 +5,8 @@ import { errorAlert } from "../Constants";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-  const { contract, walletAddress, setShowAlert } = useGlobalContext();
+  const { contract, walletAddress, setShowAlert, setErrorMessage } =
+    useGlobalContext();
   const [playerName, setPlayerName] = useState("");
 
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const Home = () => {
       }
       navigate("/createbattle");
     } catch (e) {
-      setShowAlert(errorAlert);
+      setErrorMessage(e);
     }
   };
 

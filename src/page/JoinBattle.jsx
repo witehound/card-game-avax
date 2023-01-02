@@ -7,8 +7,14 @@ import { goToNewRoute } from "../utils/interact";
 
 const JoinBattle = () => {
   const naviagte = useNavigate();
-  const { contract, setShowAlert, setBattleName, gameData, walletAddress } =
-    useGlobalContext();
+  const {
+    contract,
+    setShowAlert,
+    setBattleName,
+    gameData,
+    walletAddress,
+    setErrorMessage,
+  } = useGlobalContext();
 
   const handleJoinnBattle = async (name) => {
     if (contract) {
@@ -22,7 +28,9 @@ const JoinBattle = () => {
           type: "success",
           message: `Joining ${name}`,
         });
-      } catch (e) {}
+      } catch (e) {
+        setErrorMessage(e);
+      }
     }
   };
 

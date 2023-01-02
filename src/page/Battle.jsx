@@ -12,6 +12,7 @@ import {
 import { playAudio } from "../utils/animation.js";
 import { useGlobalContext } from "../Context";
 import { Alert, PlayerInfo, Card, ActionButton, GameInfo } from "../components";
+import { madeMove } from "../Constants";
 
 const Battle = () => {
   const {
@@ -22,15 +23,12 @@ const Battle = () => {
     setShowAlert,
     balGround,
     setBalGround,
+    setErrorMessage,
   } = useGlobalContext();
   const [player1, setPlayer1] = useState({});
   const [player2, setPlayer2] = useState({});
   const { battleName } = useParams();
   const navigate = useNavigate();
-
-  const makeAMove = (n) => {
-    playAudio(n === 1 ? attackSound : defenseSound);
-  };
 
   useEffect(() => {
     const getPlayerInfo = async () => {
@@ -75,10 +73,23 @@ const Battle = () => {
           mana: p2M,
           health: p2H,
         });
-      } catch (error) {}
+      } catch (error) {
+        setErrorMessage(error);
+      }
     };
     if (walletAddress && contract && gameData.activeBattle) getPlayerInfo();
   }, [contract, gameData, battleName]);
+
+  const makeAMove = async (n) => {
+    playAudio(n === 1 ? attackSound : defenseSound);
+
+    try {
+      await contract.attackOrDefendChoice(n, battleName);
+      setShowAlert(() => madeMove(n));
+    } catch (error) {
+      setErrorMessage(error);
+    }
+  };
 
   return (
     <div

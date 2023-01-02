@@ -29,7 +29,6 @@ export const createEventListeners = ({
   });
 
   const newBattleEventFilter = contract.filters.NewBattle();
-
   addNewEvent(newBattleEventFilter, provider, ({ args }) => {
     if (
       walletAddress.toLowerCase() === args.player1.toLowerCase() ||
@@ -39,5 +38,10 @@ export const createEventListeners = ({
     }
 
     setUpdateGameData((prevUpdateGameData) => prevUpdateGameData + 1);
+  });
+
+  const newBattleMoveEventFilter = contract.filters.BattleMove();
+  addNewEvent(newBattleMoveEventFilter, provider, ({ args }) => {
+    console.log("Battle move initiated", args);
   });
 };

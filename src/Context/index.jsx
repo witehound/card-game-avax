@@ -17,6 +17,7 @@ import {
 import { initialAlert } from "../Constants";
 import { createEventListeners } from "./createEventListeners";
 import { GetParams } from "../utils/onboard";
+import { Message } from "@material-ui/icons";
 
 const GlobalContext = createContext();
 
@@ -34,6 +35,7 @@ export const GlobalContextProvider = ({ children }) => {
   const [updateGameData, setUpdateGameData] = useState(0);
   const [balGround, setBalGround] = useState(`bg-astral`);
   const [step, setStep] = useState(1);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -84,6 +86,23 @@ export const GlobalContextProvider = ({ children }) => {
       return () => clearTimeout(timer);
     }
   }, [showAlert]);
+
+  //handle erro messages
+  useEffect(() => {
+    if (errorMessage) {
+      const paresedErrorMessage = errorMessage?.reason
+        ?.slice("execution reverted : ")
+        .slice(0, -1);
+
+      if (paresedErrorMessage) {
+        setShowAlert({
+          status: true,
+          type: "failure",
+          message: paresedErrorMessage,
+        });
+      }
+    }
+  }, [errorMessage]);
 
   useEffect(() => {
     const fetchGameData = async () => {
@@ -145,6 +164,8 @@ export const GlobalContextProvider = ({ children }) => {
         balGround,
         setBalGround,
         updateWallet,
+        errorMessage,
+        setErrorMessage,
       }}
     >
       {children}

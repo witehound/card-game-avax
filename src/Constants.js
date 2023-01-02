@@ -14,3 +14,9 @@ export const battleGroundAlert = (name) => ({
   type: "info",
   message: `${name} Is Battle Ready`,
 });
+
+export const madeMove = (n) => ({
+  status: true,
+  type: "info",
+  message: `Initiating ${n === 1 ? "Attck" : "Defense"}`,
+});
