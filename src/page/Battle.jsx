@@ -28,6 +28,10 @@ const Battle = () => {
   const { battleName } = useParams();
   const navigate = useNavigate();
 
+  const makeAMove = (n) => {
+    playAudio(n === 1 ? attackSound : defenseSound);
+  };
+
   useEffect(() => {
     const getPlayerInfo = async () => {
       try {
@@ -89,7 +93,7 @@ const Battle = () => {
 
         <div className="flex items-center flex-row">
           <ActionButton
-            handleClick={() => {}}
+            handleClick={() => makeAMove(1)}
             resStyles="mr-2 hover:border-yellow-400"
             imgUrl={attack}
           />
@@ -101,7 +105,7 @@ const Battle = () => {
           />
           <ActionButton
             imgUrl={defense}
-            handleClick={() => {}}
+            handleClick={() => makeAMove(2)}
             resStyles="ml-6 hover:border-red-600"
           />
         </div>
