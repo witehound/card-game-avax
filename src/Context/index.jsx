@@ -55,6 +55,11 @@ export const GlobalContextProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    if (localStorage.getItem("battleGround"))
+      setBalGround(localStorage.getItem("battleGround"));
+  }, []);
+
+  useEffect(() => {
     if (walletAddress) {
       createEventListeners({
         navigate,
@@ -120,6 +125,7 @@ export const GlobalContextProvider = ({ children }) => {
         gameData,
         balGround,
         setBalGround,
+        updateWallet,
       }}
     >
       {children}

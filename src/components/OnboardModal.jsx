@@ -1,15 +1,16 @@
-import { useState, useEffect } from 'react';
-import Modal from 'react-modal';
+import { useState, useEffect } from "react";
+import Modal from "react-modal";
+import { useGlobalContext } from "../Context";
 
-import styles from '../styles';
-import { CustomButton } from '.';
-import { useGlobalContext } from '../context';
-import { GetParams, SwitchNetwork } from '../utils/onboard.js';
+import styles from "../styles";
+import { CustomButton } from ".";
+
+import { GetParams, SwitchNetwork } from "../utils/onboard.js";
 
 const OnboardModal = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
-  const { updateCurrentWalletAddress } = useGlobalContext();
   const [step, setStep] = useState(-1);
+  const { updateWallet } = useGlobalContext();
 
   async function resetParams() {
     const currentStep = await GetParams();
@@ -20,11 +21,11 @@ const OnboardModal = () => {
   useEffect(() => {
     resetParams();
 
-    window?.ethereum?.on('chainChanged', () => {
+    window?.ethereum?.on("chainChanged", () => {
       resetParams();
     });
 
-    window?.ethereum?.on('accountsChanged', () => {
+    window?.ethereum?.on("accountsChanged", () => {
       resetParams();
     });
   }, []);
@@ -39,7 +40,7 @@ const OnboardModal = () => {
             </p>
             <CustomButton
               title="Download Core"
-              handleClick={() => window.open('https://core.app/', '_blank')}
+              handleClick={() => window.open("https://core.app/", "_blank")}
             />
           </>
         );
@@ -50,10 +51,7 @@ const OnboardModal = () => {
             <p className={styles.modalText}>
               You haven't connected your account to Core Wallet!
             </p>
-            <CustomButton
-              title="Connect Account"
-              handleClick={updateCurrentWalletAddress}
-            />
+            <CustomButton title="Connect Account" handleClick={updateWallet} />
           </>
         );
 
@@ -75,7 +73,9 @@ const OnboardModal = () => {
             </p>
             <CustomButton
               title="Grab some test tokens"
-              handleClick={() => window.open('https://faucet.avax.network/', '_blank')}
+              handleClick={() =>
+                window.open("https://faucet.avax.network/", "_blank")
+              }
             />
           </>
         );
