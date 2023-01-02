@@ -89,9 +89,9 @@ const Battle = () => {
 
         <div className="flex items-center flex-row">
           <ActionButton
-            imgUrl={attack}
             handleClick={() => {}}
             resStyles="mr-2 hover:border-yellow-400"
+            imgUrl={attack}
           />
           <Card
             card={player1}
