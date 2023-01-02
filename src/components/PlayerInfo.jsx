@@ -49,7 +49,7 @@ const PlayerInfo = ({ player, playerIcon, mt }) => {
           {player?.playerName}
         </p>
         <p className={styles.playerInfo}>
-          <span className={styles.playerInfoSpan}>Name : </span>{" "}
+          <span className={styles.playerInfoSpan}>Adddress : </span>{" "}
           {player?.playerAddress?.slice(0, 10)}
         </p>
       </ReactToolTip>

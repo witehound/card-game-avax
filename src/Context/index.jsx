@@ -37,6 +37,9 @@ export const GlobalContextProvider = ({ children }) => {
   const [step, setStep] = useState(1);
   const [errorMessage, setErrorMessage] = useState("");
 
+  const player1Ref = useRef();
+  const player2Ref = useRef();
+
   const navigate = useNavigate();
 
   const updateWallet = async () => {
@@ -73,6 +76,8 @@ export const GlobalContextProvider = ({ children }) => {
         provider,
         setShowAlert,
         setUpdateGameData,
+        player1Ref,
+        player2Ref,
       });
     }
   }, [walletAddress, step]);
@@ -166,6 +171,8 @@ export const GlobalContextProvider = ({ children }) => {
         updateWallet,
         errorMessage,
         setErrorMessage,
+        player1Ref,
+        player2Ref,
       }}
     >
       {children}

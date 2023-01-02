@@ -1,5 +1,8 @@
 import { Contract, ethers } from "ethers";
+import { defenseSound } from "../assets";
 import { ABI } from "../Contract";
+import { playAudio, sparcle } from "../utils/animation";
+const emptyAdd = "0x0000000000000000000000000000000000000000";
 
 const addNewEvent = (evenFilter, provider, cb) => {
   provider.removeListener(evenFilter);
@@ -9,6 +12,15 @@ const addNewEvent = (evenFilter, provider, cb) => {
   });
 };
 
+const getCord = (ref) => {
+  const { left, top, width, height } = ref.current.getBoundingClientRect();
+
+  return {
+    pageX: (left + width) / 2,
+    pageY: (top + height) / 2.25,
+  };
+};
+
 export const createEventListeners = ({
   navigate,
   contract,
@@ -16,6 +28,8 @@ export const createEventListeners = ({
   provider,
   setShowAlert,
   setUpdateGameData,
+  player1Ref,
+  player2Ref,
 }) => {
   const newPlayerEventFilter = contract.filters.NewPlayer();
   addNewEvent(newPlayerEventFilter, provider, ({ args }) => {
@@ -43,5 +57,24 @@ export const createEventListeners = ({
   const newBattleMoveEventFilter = contract.filters.BattleMove();
   addNewEvent(newBattleMoveEventFilter, provider, ({ args }) => {
     console.log("Battle move initiated", args);
+  });
+
+  const newRoundEndedEventFilter = contract.filters.RoundEnded();
+  addNewEvent(newRoundEndedEventFilter, provider, ({ args }) => {
+    console.log("Round Ended", args, walletAddress);
+
+    for (let i = 0; i < args.damagedPlayers.length; i++) {
+      if (args.damagedPlayers[i] !== emptyAdd) {
+        if (args.damagedPlayers[i] === walletAddress) {
+          sparcle(getCord(player1Ref));
+        } else if (args.damagedPlayers[i] !== walletAddress) {
+          sparcle(getCord(player2Ref));
+        }
+      } else {
+        playAudio(defenseSound);
+      }
+    }
+
+    setUpdateGameData((prevUpdateGameData) => prevUpdateGameData + 1);
   });
 };

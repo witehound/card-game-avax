@@ -24,6 +24,8 @@ const Battle = () => {
     balGround,
     setBalGround,
     setErrorMessage,
+    player1Ref,
+    player2Ref,
   } = useGlobalContext();
   const [player1, setPlayer1] = useState({});
   const [player2, setPlayer2] = useState({});
@@ -91,6 +93,14 @@ const Battle = () => {
     }
   };
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!gameData.activeBattle) navigate("/");
+    }, [5000]);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div
       className={`${styles.flexBetween} ${styles.gameContainer} ${balGround}`}
@@ -100,7 +110,12 @@ const Battle = () => {
       ) : null}
       <PlayerInfo player={player2} playerIcon={playey02icon} mt />
       <div className={`${styles.flexCenter} flex-col my-10`}>
-        <Card card={player2} title={player2?.playerName} cardRef="" player2 />
+        <Card
+          card={player2}
+          title={player2?.playerName}
+          cardRef={player2Ref}
+          player2
+        />
 
         <div className="flex items-center flex-row">
           <ActionButton
@@ -111,7 +126,7 @@ const Battle = () => {
           <Card
             card={player1}
             title={player1?.playerName}
-            cardRef=""
+            cardRef={player1Ref}
             resStyles="mt-3"
           />
           <ActionButton
