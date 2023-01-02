@@ -16,6 +16,7 @@ import {
 } from "../utils/context";
 import { initialAlert } from "../Constants";
 import { createEventListeners } from "./createEventListeners";
+import { GetParams } from "../utils/onboard";
 
 const GlobalContext = createContext();
 
@@ -32,6 +33,8 @@ export const GlobalContextProvider = ({ children }) => {
   });
   const [updateGameData, setUpdateGameData] = useState(0);
   const [balGround, setBalGround] = useState(`bg-astral`);
+  const [step, setStep] = useState(1);
+
   const navigate = useNavigate();
 
   const updateWallet = async () => {
@@ -60,7 +63,7 @@ export const GlobalContextProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (walletAddress) {
+    if (walletAddress && step !== -1) {
       createEventListeners({
         navigate,
         contract,
@@ -70,7 +73,7 @@ export const GlobalContextProvider = ({ children }) => {
         setUpdateGameData,
       });
     }
-  }, [walletAddress]);
+  }, [walletAddress, step]);
 
   useEffect(() => {
     if (showAlert.status) {
@@ -112,6 +115,22 @@ export const GlobalContextProvider = ({ children }) => {
       fetchGameData();
     }
   }, [walletAddress, updateGameData]);
+
+  useEffect(() => {
+    const resetParams = async () => {
+      const currentStep = GetParams();
+      setStep((await currentStep).step);
+    };
+    if (walletAddress) {
+      resetParams();
+    }
+    window?.ethereum?.on("chainChanged", () => {
+      resetParams();
+    });
+    window?.ethereum?.on("accountsChanged", () => {
+      resetParams();
+    });
+  }, [walletAddress]);
 
   return (
     <GlobalContext.Provider
