@@ -99,7 +99,7 @@ const Battle = () => {
     }, [5000]);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [gameData]);
 
   return (
     <div

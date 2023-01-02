@@ -67,8 +67,11 @@ export const createEventListeners = ({
       if (args.damagedPlayers[i] !== emptyAdd) {
         if (args.damagedPlayers[i] === walletAddress) {
           sparcle(getCord(player1Ref));
-        } else if (args.damagedPlayers[i] !== walletAddress) {
+          console.log("1");
+        }
+        if (args.damagedPlayers[i] !== walletAddress) {
           sparcle(getCord(player2Ref));
+          console.log("2");
         }
       } else {
         playAudio(defenseSound);
