@@ -8,3 +8,9 @@ export const errorAlert = {
   type: "failure",
   message: "Somthing went wrong!",
 };
+
+export const battleGroundAlert = (name) => ({
+  status: true,
+  type: "info",
+  message: `${name} Is Battle Ready`,
+});

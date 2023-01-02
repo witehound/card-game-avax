@@ -4,12 +4,22 @@ import styles from "../styles";
 import { Alert } from "../components";
 import { battlegrounds } from "../assets";
 import { useGlobalContext } from "../Context";
+import { battleGroundAlert } from "../Constants";
 
 const BattleGround = () => {
   const navigate = useNavigate();
-  const { showAlert, setShowAlert, setBalGround } = useGlobalContext();
+  const { showAlert, setShowAlert, setBalGround, walletAdddress } =
+    useGlobalContext();
 
-  const handleBattleGroundChoice = (ground) => {};
+  const handleBattleGroundChoice = (ground) => {
+    setBalGround(ground.id);
+    localStorage.setItem("battleGround", ground.id);
+    setShowAlert(battleGroundAlert(ground.name));
+
+    setTimeout(() => {
+      navigate(-1);
+    }, 1000);
+  };
 
   return (
     <div className={`${styles.flexCenter} ${styles.battlegroundContainer}`}>
