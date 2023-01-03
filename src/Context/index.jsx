@@ -3,13 +3,11 @@ import React, {
   useEffect,
   useRef,
   useState,
-  create,
   createContext,
 } from "react";
 
-import { ethers } from "ethers";
 import { useNavigate } from "react-router-dom";
-import Web3Moddal from "web3modal";
+
 import {
   setSmartContractandProvider,
   updateCurrentWalletAddress,
@@ -17,7 +15,6 @@ import {
 import { initialAlert } from "../Constants";
 import { createEventListeners } from "./createEventListeners";
 import { GetParams } from "../utils/onboard";
-import { Message } from "@material-ui/icons";
 
 const GlobalContext = createContext();
 
@@ -111,7 +108,9 @@ export const GlobalContextProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchGameData = async () => {
-      const fetchedBattles = await contract.getAllBattles();
+      const fetchedBattles = await contract.getAllBattles({
+        gasLimit: 200000,
+      });
 
       const pendingBattles = fetchedBattles.filter(
         (battle) => battle.battleStatus === 0

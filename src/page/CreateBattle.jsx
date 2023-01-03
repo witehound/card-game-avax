@@ -7,19 +7,33 @@ import { CustomButton, CustomInput, GameLoad } from "../components";
 
 const CreateBattle = () => {
   const navigate = useNavigate();
-  const { contract, battleName, setBattleName, gameData, setErrorMessage } =
-    useGlobalContext();
+  const {
+    contract,
+    battleName,
+    setBattleName,
+    gameData,
+    setErrorMessage,
+    walletAddress,
+  } = useGlobalContext();
   const [waitBattle, setWaitBattle] = useState(false);
 
   const createNewBattle = async () => {
     if (!battleName || !battleName.trim) return null;
     try {
-      await contract.createBattle(battleName);
+      await contract.createBattle(battleName, {
+        gasLimit: 200000,
+      });
       setWaitBattle(true);
     } catch (e) {
       setErrorMessage(e);
     }
   };
+
+  useEffect(() => {
+    if (!walletAddress) {
+      navigate("/");
+    }
+  }, []);
 
   useEffect(() => {
     if (gameData?.activeBattle?.battleStatus === 1) {

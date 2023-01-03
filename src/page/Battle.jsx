@@ -33,6 +33,12 @@ const Battle = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (!walletAddress) {
+      navigate("/");
+    }
+  }, []);
+
+  useEffect(() => {
     const getPlayerInfo = async () => {
       try {
         let player01Address = null;
@@ -86,7 +92,9 @@ const Battle = () => {
     playAudio(n === 1 ? attackSound : defenseSound);
 
     try {
-      await contract.attackOrDefendChoice(n, battleName);
+      await contract.attackOrDefendChoice(n, battleName, {
+        gasLimit: 200000,
+      });
       setShowAlert(() => madeMove(n));
     } catch (error) {
       setErrorMessage(error);

@@ -100,4 +100,17 @@ export const createEventListeners = ({
 
     navigate("/createbattle");
   });
+
+  const newGameTokenventFilter = contract.filters.NewGameToken();
+  addNewEvent(newGameTokenventFilter, provider, ({ args }) => {
+    if (walletAddress.toLowerCase() === args.owner.toLowerCase()) {
+      setShowAlert({
+        status: true,
+        type: "succes",
+        message: "Player Game Token Has Been Successfully Created",
+      });
+
+      navigate("/createbattle");
+    }
+  });
 };

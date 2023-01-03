@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles";
 import { Alert } from "../components";
@@ -8,7 +8,7 @@ import { battleGroundAlert } from "../Constants";
 
 const BattleGround = () => {
   const navigate = useNavigate();
-  const { showAlert, setShowAlert, setBalGround, walletAdddress } =
+  const { showAlert, setShowAlert, setBalGround, walletAddress } =
     useGlobalContext();
 
   const handleBattleGroundChoice = (ground) => {
@@ -20,6 +20,12 @@ const BattleGround = () => {
       navigate(-1);
     }, 1000);
   };
+
+  useEffect(() => {
+    if (!walletAddress) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <div className={`${styles.flexCenter} ${styles.battlegroundContainer}`}>

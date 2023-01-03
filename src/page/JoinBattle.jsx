@@ -6,7 +6,7 @@ import styles from "../styles";
 import { goToNewRoute } from "../utils/interact";
 
 const JoinBattle = () => {
-  const naviagte = useNavigate();
+  const navigate = useNavigate();
   const {
     contract,
     setShowAlert,
@@ -33,6 +33,17 @@ const JoinBattle = () => {
       }
     }
   };
+
+  useEffect(() => {
+    if (!walletAddress) {
+      navigate("/");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (gameData?.activeBattle?.battleStatus === 1)
+      navigate(`/battle/${gameData?.activeBattle?.name}`);
+  }, [gameData]);
 
   return (
     <>
@@ -62,7 +73,7 @@ const JoinBattle = () => {
       <p
         className={styles.infoText}
         onClick={() => {
-          goToNewRoute(naviagte, "/createbattle");
+          goToNewRoute(navigate, "/createbattle");
         }}
       >
         Or Create New Battle
