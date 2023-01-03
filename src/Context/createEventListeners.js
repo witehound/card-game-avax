@@ -80,4 +80,24 @@ export const createEventListeners = ({
 
     setUpdateGameData((prevUpdateGameData) => prevUpdateGameData + 1);
   });
+
+  const newBattleEndedEventFilter = contract.filters.BattleEnded();
+  addNewEvent(newBattleEndedEventFilter, provider, ({ args }) => {
+    console.log("Battle Ended", args, walletAddress);
+    if (walletAddress.toLowerCase() === args.winner.toLowerCase()) {
+      setShowAlert({
+        status: true,
+        type: "info",
+        message: "You won",
+      });
+    } else if (walletAddress.toLowerCase() === args.loser.toLowerCase()) {
+      setShowAlert({
+        status: true,
+        type: "failure",
+        message: "You Lost",
+      });
+    }
+
+    navigate("/createbattle");
+  });
 };
